@@ -9,31 +9,31 @@ mqttBroker = "test.mosquitto.org"
 client = mqtt.Client("fuzzyProject")
 client.connect(mqttBroker)
 
-# Definicao das variaveis do sistema de controle fuzzy
+# Definição das variáveis do sistema de controle fuzzy
 errotemp = ctrl.Antecedent(np.arange(-8, 18.1, 0.1), 'errotemp')
-varerrotemp = ctrl.Antecedent(np.arange(-1, 1.01, 0.01), 'varerrotemp')
+varerrotemp = ctrl.Antecedent(np.arange(-2, 2.01, 0.01), 'varerrotemp')
 resfriador = ctrl.Consequent(np.arange(0, 101, 1), 'resfriador')
 
-# Funcoes de pertinencia para errotemp
-errotemp['MN'] = fuzz.trapmf(errotemp.universe, [-8, -8, -1.2, -0.6])
-errotemp['PN'] = fuzz.trimf(errotemp.universe, [-1.2, -0.6, 0])
-errotemp['ZE'] = fuzz.trimf(errotemp.universe, [-0.6, 0, 0.6])
-errotemp['PP'] = fuzz.trimf(errotemp.universe, [0, 0.6, 1.2])
-errotemp['MP'] = fuzz.trapmf(errotemp.universe, [0.6, 1.2, 18, 18])
+# Funções de pertinência para errotemp
+errotemp['MN'] = fuzz.trapmf(errotemp.universe, [-8, -8, -2, -1])
+errotemp['PN'] = fuzz.trimf(errotemp.universe, [-2, -1, 0])
+errotemp['ZE'] = fuzz.trimf(errotemp.universe, [-1, 0, 1])
+errotemp['PP'] = fuzz.trimf(errotemp.universe, [0, 1, 2])
+errotemp['MP'] = fuzz.trapmf(errotemp.universe, [1, 2, 18, 18])
 errotemp.view()
 
-# Funcoes de pertinencia para varerrotemp
-varerrotemp['MN'] = fuzz.trapmf(varerrotemp.universe, [-1, -1, -0.2, -0.1])
-varerrotemp['PN'] = fuzz.trimf(varerrotemp.universe, [-0.2, -0.1, 0])
-varerrotemp['ZE'] = fuzz.trimf(varerrotemp.universe, [-0.1, 0, 0.1])
-varerrotemp['PP'] = fuzz.trimf(varerrotemp.universe, [0, 0.1, 0.2])
-varerrotemp['MP'] = fuzz.trapmf(varerrotemp.universe, [0.1, 0.2, 1, 1])
+# Funções de pertinência para varerrotemp
+varerrotemp['MN'] = fuzz.trapmf(varerrotemp.universe, [-2, -2, -0.4, -0.2])
+varerrotemp['PN'] = fuzz.trimf(varerrotemp.universe, [-0.4, -0.2, 0])
+varerrotemp['ZE'] = fuzz.trimf(varerrotemp.universe, [-0.2, 0, 0.2])
+varerrotemp['PP'] = fuzz.trimf(varerrotemp.universe, [0, 0.2, 0.4])
+varerrotemp['MP'] = fuzz.trapmf(varerrotemp.universe, [0.2, 0.4, 2, 2])
 varerrotemp.view()
 
-# Funcoes de pertinencia para resfriador
-resfriador['MB'] = fuzz.trimf(resfriador.universe, [0, 0, 25])
-resfriador['B'] = fuzz.trimf(resfriador.universe, [0, 25, 50])
-resfriador['M'] = fuzz.trimf(resfriador.universe, [25, 50, 75])
+# Funções de pertinência para resfriador
+resfriador['MB'] = fuzz.trimf(resfriador.universe, [0, 0, 30])
+resfriador['B'] = fuzz.trimf(resfriador.universe, [0, 30, 50])
+resfriador['M'] = fuzz.trimf(resfriador.universe, [30, 50, 75])
 resfriador['A'] = fuzz.trimf(resfriador.universe, [50, 75, 100])
 resfriador['MA'] = fuzz.trimf(resfriador.universe, [75, 100, 100])
 resfriador.view()
@@ -74,8 +74,8 @@ resfriador_ctrl = ctrl.ControlSystem(regras)
 potencia = ctrl.ControlSystemSimulation(resfriador_ctrl)
 
 # Loop principal
-sp = -10
-tempatual = 10
+sp = -2
+tempatual = 5
 erroatual = tempatual - sp
 
 while True:
